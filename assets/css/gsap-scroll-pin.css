@@ -4,15 +4,16 @@
 
 .tm-sc-gsap-scroll-pin {
     width: 100%;
-    overflow: hidden;
+    position: relative;
 }
 
 .gsap-scroll-pin-wrapper {
     position: relative;
-    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    padding: 50px 0;
 }
 
 .scroll-pin-title {
@@ -42,7 +43,7 @@
     }
 
     .gsap-scroll-pin-wrapper {
-        min-height: 50vh;
+        padding: 30px 0;
     }
 }
 
