@@ -18,9 +18,10 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 class GSAP_Scroll_Pin_Widget extends Widget_Base {
 	public function __construct($data = [], $args = null) {
 		parent::__construct($data, $args);
+		$direction_suffix = is_rtl() ? '.rtl' : '';
 
-		// Scripts are registered in the main plugin file
-		// They will be enqueued automatically by Elementor when needed
+		//wp_register_style( 'tm-gsap-scroll-pin-style', MASCOT_CORE_HOTELIN_ASSETS_URI . '/css/shortcodes/gsap-scroll-pin' . $direction_suffix . '.css' );
+		//wp_register_script( 'tm-gsap-scroll-pin', MASCOT_CORE_HOTELIN_ASSETS_URI . '/js/widgets/gsap-scroll-pin.js', array('jquery', 'gsap', 'tm-scroll-trigger'), false, true );
 	}
 
 	/**
@@ -41,14 +42,14 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 	 * Retrieve the widget icon.
 	 */
 	public function get_icon() {
-		return 'eicon-animation';
+		return 'tm-elementor-widget-icon';
 	}
 
 	/**
 	 * Retrieve the list of categories the widget belongs to.
 	 */
 	public function get_categories() {
-		return [ 'general' ];
+		return [ 'tm-gsap' ];
 	}
 
 	/**
@@ -58,11 +59,8 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 		return [ 'gsap', 'tm-scroll-trigger', 'tm-gsap-scroll-pin' ];
 	}
 
-	/**
-	 * Retrieve the list of styles the widget depended on.
-	 */
 	public function get_style_depends() {
-		return [ 'mascot-gsap-scroll-pin' ];
+		return [ 'tm-gsap-scroll-pin-style' ];
 	}
 
 	/**
@@ -584,8 +582,8 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 			'initial-scale' => isset($settings['initial_scale']['size']) ? $settings['initial_scale']['size'] : 0.6,
 			'final-scale' => isset($settings['final_scale']['size']) ? $settings['final_scale']['size'] : 1,
 			'duration' => isset($settings['scale_animation_duration']['size']) ? $settings['scale_animation_duration']['size'] : 4,
-			'hold-duration' => isset($settings['hold_duration']['size']) ? $settings['hold_duration']['size'] : 0,
-			'hold-delay' => isset($settings['hold_delay']['size']) ? $settings['hold_delay']['size'] : 1,
+			'hold-duration' => isset($settings['hold_duration']['size']) ? $settings['hold_duration']['size'] : 4,
+			'hold-delay' => isset($settings['hold_delay']['size']) ? $settings['hold_delay']['size'] : 4,
 			'trigger-start' => isset($settings['trigger_start']) ? $settings['trigger_start'] : 'top center-=350',
 			'trigger-end' => isset($settings['trigger_end']) ? $settings['trigger_end'] : 'bottom 150%',
 			'scrub' => isset($settings['scrub']['size']) ? $settings['scrub']['size'] : 1,
@@ -629,7 +627,6 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 			'2' => esc_html__( 'Color 2', 'mascot-gsap' ),
 			'3' => esc_html__( 'Color 3', 'mascot-gsap' ),
 			'4' => esc_html__( 'Color 4', 'mascot-gsap' ),
-			'5' => esc_html__( 'Color 5', 'mascot-gsap' ),
 		];
 	}
 
