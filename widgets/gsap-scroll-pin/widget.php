@@ -59,6 +59,13 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 	}
 
 	/**
+	 * Retrieve the list of styles the widget depended on.
+	 */
+	public function get_style_depends() {
+		return [ 'mascot-gsap-scroll-pin' ];
+	}
+
+	/**
 	 * Register the widget controls.
 	 */
 	protected function register_controls() {
@@ -92,7 +99,7 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 		$this->add_control(
 			'title_other_part',
 			[
-				'label' => esc_html__( 'Other Parts', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Other Parts', 'mascot-gsap' ),
 				'type' => \Elementor\Controls_Manager::HEADING,
 				'separator' => 'before',
 			]
@@ -101,14 +108,14 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 		$repeater->add_control(
 			'title_other_text',
 			[
-				'label' => esc_html__( "Title Text", 'mascot-core-hotelin' ),
+				'label' => esc_html__( "Title Text", 'mascot-gsap' ),
 				'type' => \Elementor\Controls_Manager::TEXTAREA,
 			]
 		);
 		$repeater->add_control(
 			'title_other_text_color',
 			[
-				'label' => esc_html__( "Text Color", 'mascot-core-hotelin' ),
+				'label' => esc_html__( "Text Color", 'mascot-gsap' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .scroll-pin-title  {{CURRENT_ITEM}}' => 'color: {{VALUE}};'
@@ -118,9 +125,9 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 		$repeater->add_control(
 			'title_other_theme_colored',
 			[
-				'label' => esc_html__( "Theme Colored", 'mascot-core-hotelin' ),
+				'label' => esc_html__( "Theme Colored", 'mascot-gsap' ),
 				'type' => \Elementor\Controls_Manager::SELECT,
-				'options' => mascot_core_hotelin_theme_color_list(),
+				'options' => $this->get_theme_color_list(),
 				'default' => '',
 				'selectors' => [
 					'{{WRAPPER}} .scroll-pin-title  {{CURRENT_ITEM}}' => 'color: var(--theme-color{{VALUE}});'
@@ -131,14 +138,14 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 			\Elementor\Group_Control_Typography::get_type(),
 			[
 				'name' => 'title_other_typography',
-				'label' => esc_html__( 'Typography', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Typography', 'mascot-gsap' ),
 				'selector' => '{{WRAPPER}} .scroll-pin-title  {{CURRENT_ITEM}}',
 			]
 		);
 		$repeater->add_responsive_control(
 			'title_padding',
 			[
-				'label' => esc_html__( 'Text Padding', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Text Padding', 'mascot-gsap' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%', 'em' ],
 				'selectors' => [
@@ -149,7 +156,7 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 		$repeater->add_responsive_control(
             'stroke_text_width_normal',
             [
-                'label' => esc_html__( 'Stroke Width', 'mascot-core-hotelin' ),
+                'label' => esc_html__( 'Stroke Width', 'mascot-gsap' ),
                 'type' => Controls_Manager::SLIDER,
                 'size_units' => [ 'px', '%', 'vw' ],
                 'range' => [
@@ -164,7 +171,7 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 		$repeater->add_control(
 			'stroke_text_color_normal',
 			[
-				'label' => esc_html__( 'Stroke Color', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Stroke Color', 'mascot-gsap' ),
 				'type' => Controls_Manager::COLOR,
 				'default' => '',
 				'selectors' => [
@@ -175,9 +182,9 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 		$repeater->add_control(
 			'stroke_text_theme_colored',
 			[
-				'label' => esc_html__( "Stroke Theme Colored", 'mascot-core-hotelin' ),
+				'label' => esc_html__( "Stroke Theme Colored", 'mascot-gsap' ),
 				'type' => \Elementor\Controls_Manager::SELECT,
-				'options' => mascot_core_hotelin_theme_color_list(),
+				'options' => $this->get_theme_color_list(),
 				'default' => '',
 				'selectors' => [
 					'{{WRAPPER}} .scroll-pin-title  {{CURRENT_ITEM}}' => '-webkit-text-stroke-color: var(--theme-color{{VALUE}});',
@@ -187,7 +194,7 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 		$this->add_control(
 			'title_list',
 			[
-				'label' => esc_html__( "Title Other Parts", 'mascot-core-hotelin' ),
+				'label' => esc_html__( "Title Other Parts", 'mascot-gsap' ),
 				'type' => \Elementor\Controls_Manager::REPEATER,
 				'fields' => $repeater->get_controls(),
 			]
@@ -198,23 +205,23 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 		$this->start_controls_section(
 			'animation_settings',
 			[
-				'label' => esc_html__( 'Animation Settings', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Animation Settings', 'mascot-gsap' ),
 				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
 			]
 		);
 		$this->add_control(
 			'enable_scale_animation',
 			[
-				'label' => esc_html__( "Enable Scale Animation", 'mascot-core-hotelin' ),
+				'label' => esc_html__( "Enable Scale Animation", 'mascot-gsap' ),
 				'type' => \Elementor\Controls_Manager::SWITCHER,
 				'default' => 'yes',
-				'description' => esc_html__( 'Animate the scale (zoom) effect while scrolling', 'mascot-core-hotelin' ),
+				'description' => esc_html__( 'Animate the scale (zoom) effect while scrolling', 'mascot-gsap' ),
 			]
 		);
 		$this->add_control(
 			'initial_scale',
 			[
-				'label' => esc_html__( 'Initial Scale', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Initial Scale', 'mascot-gsap' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px' ],
 				'range' => [
@@ -236,7 +243,7 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 		$this->add_control(
 			'final_scale',
 			[
-				'label' => esc_html__( 'Final Scale', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Final Scale', 'mascot-gsap' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px' ],
 				'range' => [
@@ -258,7 +265,7 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 		$this->add_control(
 			'scale_animation_duration',
 			[
-				'label' => esc_html__( 'Animation Duration', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Animation Duration', 'mascot-gsap' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px' ],
 				'range' => [
@@ -275,13 +282,13 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 				'condition' => [
 					'enable_scale_animation' => 'yes'
 				],
-				'description' => esc_html__( 'Duration for the scale animation from initial to final (higher = slower)', 'mascot-core-hotelin' ),
+				'description' => esc_html__( 'Duration for the scale animation from initial to final (higher = slower)', 'mascot-gsap' ),
 			]
 		);
 		$this->add_control(
 			'hold_duration',
 			[
-				'label' => esc_html__( 'Hold Duration', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Hold Duration', 'mascot-gsap' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px' ],
 				'range' => [
@@ -295,13 +302,13 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 					'unit' => 'px',
 					'size' => 0,
 				],
-				'description' => esc_html__( 'Duration to hold at final scale before next animation (higher = slower)', 'mascot-core-hotelin' ),
+				'description' => esc_html__( 'Duration to hold at final scale before next animation (higher = slower)', 'mascot-gsap' ),
 			]
 		);
 		$this->add_control(
 			'hold_delay',
 			[
-				'label' => esc_html__( 'Hold Delay', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Hold Delay', 'mascot-gsap' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px' ],
 				'range' => [
@@ -315,13 +322,13 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 					'unit' => 'px',
 					'size' => 1,
 				],
-				'description' => esc_html__( 'Delay before the hold animation starts (higher = more delay)', 'mascot-core-hotelin' ),
+				'description' => esc_html__( 'Delay before the hold animation starts (higher = more delay)', 'mascot-gsap' ),
 			]
 		);
 		$this->add_control(
 			'scrub',
 			[
-				'label' => esc_html__( 'Scrub Value', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Scrub Value', 'mascot-gsap' ),
 				'type' => Controls_Manager::SLIDER,
 				'size_units' => [ 'px' ],
 				'range' => [
@@ -335,7 +342,7 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 					'unit' => 'px',
 					'size' => 1,
 				],
-				'description' => esc_html__( 'Scrub value controls the smoothness of the animation. Higher values = smoother. Set to 0 for no scrub.', 'mascot-core-hotelin' ),
+				'description' => esc_html__( 'Scrub value controls the smoothness of the animation. Higher values = smoother. Set to 0 for no scrub.', 'mascot-gsap' ),
 			]
 		);
 		$this->end_controls_section();
@@ -344,44 +351,44 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 		$this->start_controls_section(
 			'scroll_trigger_settings',
 			[
-				'label' => esc_html__( 'ScrollTrigger Settings', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'ScrollTrigger Settings', 'mascot-gsap' ),
 				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
 			]
 		);
 		$this->add_control(
 			'trigger_start',
 			[
-				'label' => esc_html__( 'Trigger Start', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Trigger Start', 'mascot-gsap' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => 'top center-=350',
-				'description' => esc_html__( 'When the animation starts (e.g., "top center", "top center-=350")', 'mascot-core-hotelin' ),
+				'description' => esc_html__( 'When the animation starts (e.g., "top center", "top center-=350")', 'mascot-gsap' ),
 			]
 		);
 		$this->add_control(
 			'trigger_end',
 			[
-				'label' => esc_html__( 'Trigger End', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Trigger End', 'mascot-gsap' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => 'bottom 150%',
-				'description' => esc_html__( 'When the animation ends (e.g., "bottom center", "bottom 150%")', 'mascot-core-hotelin' ),
+				'description' => esc_html__( 'When the animation ends (e.g., "bottom center", "bottom 150%")', 'mascot-gsap' ),
 			]
 		);
 		$this->add_control(
 			'pin_spacing',
 			[
-				'label' => esc_html__( "Pin Spacing", 'mascot-core-hotelin' ),
+				'label' => esc_html__( "Pin Spacing", 'mascot-gsap' ),
 				'type' => \Elementor\Controls_Manager::SWITCHER,
 				'default' => 'no',
-				'description' => esc_html__( 'Whether to add padding at the end of the pinned element', 'mascot-core-hotelin' ),
+				'description' => esc_html__( 'Whether to add padding at the end of the pinned element', 'mascot-gsap' ),
 			]
 		);
 		$this->add_control(
 			'show_markers',
 			[
-				'label' => esc_html__( "Show Debug Markers", 'mascot-core-hotelin' ),
+				'label' => esc_html__( "Show Debug Markers", 'mascot-gsap' ),
 				'type' => \Elementor\Controls_Manager::SWITCHER,
 				'default' => 'no',
-				'description' => esc_html__( 'Show ScrollTrigger markers for debugging (development only)', 'mascot-core-hotelin' ),
+				'description' => esc_html__( 'Show ScrollTrigger markers for debugging (development only)', 'mascot-gsap' ),
 			]
 		);
 		$this->end_controls_section();
@@ -390,25 +397,25 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 		$this->start_controls_section(
 			'general_settings',
 			[
-				'label' => esc_html__( 'General Settings', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'General Settings', 'mascot-gsap' ),
 				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
 			]
 		);
 		$this->add_control(
 			'custom_css_class',
 			[
-				'label' => esc_html__( "Custom CSS Class", 'mascot-core-hotelin' ),
+				'label' => esc_html__( "Custom CSS Class", 'mascot-gsap' ),
 				'type' => \Elementor\Controls_Manager::TEXT,
-				'description' => esc_html__( 'Add custom CSS class for styling', 'mascot-core-hotelin' ),
+				'description' => esc_html__( 'Add custom CSS class for styling', 'mascot-gsap' ),
 			]
 		);
 		$this->add_responsive_control(
 			'text_alignment',
 			[
-				'label' => esc_html__( "Text Alignment", 'mascot-core-hotelin' ),
+				'label' => esc_html__( "Text Alignment", 'mascot-gsap' ),
 				'type' => Controls_Manager::CHOOSE,
 				'label_block' => false,
-				'options' => mascot_core_hotelin_text_align_choose(),
+				'options' => $this->get_text_align_options(),
 				'selectors' => [
 					'{{WRAPPER}} .gsap-scroll-pin-wrapper' => 'text-align: {{VALUE}};'
 				]
@@ -422,14 +429,14 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 		$this->start_controls_section(
 			'title_styling',
 			[
-				'label' => esc_html__( 'Title Styling', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Title Styling', 'mascot-gsap' ),
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
 		$this->add_control(
 			'title_text_color',
 			[
-				'label' => esc_html__( "Text Color", 'mascot-core-hotelin' ),
+				'label' => esc_html__( "Text Color", 'mascot-gsap' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .scroll-pin-title' => 'color: {{VALUE}};'
@@ -439,7 +446,7 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 		$this->add_control(
 			'title_text_color_hover',
 			[
-				'label' => esc_html__( "Text Color (Hover)", 'mascot-core-hotelin' ),
+				'label' => esc_html__( "Text Color (Hover)", 'mascot-gsap' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}}:hover .scroll-pin-title' => 'color: {{VALUE}};'
@@ -449,9 +456,9 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 		$this->add_control(
 			'title_theme_colored',
 			[
-				'label' => esc_html__( "Theme Colored", 'mascot-core-hotelin' ),
+				'label' => esc_html__( "Theme Colored", 'mascot-gsap' ),
 				'type' => \Elementor\Controls_Manager::SELECT,
-				'options' => mascot_core_hotelin_theme_color_list(),
+				'options' => $this->get_theme_color_list(),
 				'default' => '',
 				'selectors' => [
 					'{{WRAPPER}} .scroll-pin-title' => 'color: var(--theme-color{{VALUE}});'
@@ -462,14 +469,14 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 			\Elementor\Group_Control_Typography::get_type(),
 			[
 				'name' => 'title_typography',
-				'label' => esc_html__( 'Typography', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Typography', 'mascot-gsap' ),
 				'selector' => '{{WRAPPER}} .scroll-pin-title',
 			]
 		);
 		$this->add_responsive_control(
 			'title_padding',
 			[
-				'label' => esc_html__( 'Title Padding', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Title Padding', 'mascot-gsap' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%', 'em' ],
 				'selectors' => [
@@ -480,7 +487,7 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 		$this->add_responsive_control(
 			'title_margin',
 			[
-				'label' => esc_html__( 'Title Margin', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Title Margin', 'mascot-gsap' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%', 'em' ],
 				'selectors' => [
@@ -492,7 +499,7 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 			\Elementor\Group_Control_Background::get_type(),
 			[
 				'name' => 'title_background',
-				'label' => esc_html__( 'Background', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Background', 'mascot-gsap' ),
 				'types' => [ 'classic', 'gradient' ],
 				'selector' => '{{WRAPPER}} .scroll-pin-title',
 			]
@@ -501,14 +508,14 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 			\Elementor\Group_Control_Border::get_type(),
 			[
 				'name' => 'title_border',
-				'label' => esc_html__( 'Border', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Border', 'mascot-gsap' ),
 				'selector' => '{{WRAPPER}} .scroll-pin-title',
 			]
 		);
 		$this->add_responsive_control(
 			'title_border_radius',
 			[
-				'label' => esc_html__( 'Border Radius', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Border Radius', 'mascot-gsap' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%' ],
 				'selectors' => [
@@ -520,7 +527,7 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 			\Elementor\Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'title_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Box Shadow', 'mascot-gsap' ),
 				'selector' => '{{WRAPPER}} .scroll-pin-title',
 			]
 		);
@@ -532,14 +539,14 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 		$this->start_controls_section(
 			'container_styling',
 			[
-				'label' => esc_html__( 'Container Styling', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Container Styling', 'mascot-gsap' ),
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
 		$this->add_responsive_control(
 			'container_padding',
 			[
-				'label' => esc_html__( 'Container Padding', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Container Padding', 'mascot-gsap' ),
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%', 'em' ],
 				'selectors' => [
@@ -551,7 +558,7 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 			\Elementor\Group_Control_Background::get_type(),
 			[
 				'name' => 'container_background',
-				'label' => esc_html__( 'Background', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Background', 'mascot-gsap' ),
 				'types' => [ 'classic', 'gradient' ],
 				'selector' => '{{WRAPPER}} .gsap-scroll-pin-wrapper',
 			]
@@ -570,7 +577,6 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 		if( !empty($settings['custom_css_class']) ) {
 			$classes[] = $settings['custom_css_class'];
 		}
-		$settings['classes'] = $classes;
 
 		// Build animation data attributes
 		$animation_data = array(
@@ -578,24 +584,77 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 			'initial-scale' => isset($settings['initial_scale']['size']) ? $settings['initial_scale']['size'] : 0.6,
 			'final-scale' => isset($settings['final_scale']['size']) ? $settings['final_scale']['size'] : 1,
 			'duration' => isset($settings['scale_animation_duration']['size']) ? $settings['scale_animation_duration']['size'] : 4,
-			'hold-duration' => isset($settings['hold_duration']['size']) ? $settings['hold_duration']['size'] : 4,
-			'hold-delay' => isset($settings['hold_delay']['size']) ? $settings['hold_delay']['size'] : 4,
+			'hold-duration' => isset($settings['hold_duration']['size']) ? $settings['hold_duration']['size'] : 0,
+			'hold-delay' => isset($settings['hold_delay']['size']) ? $settings['hold_delay']['size'] : 1,
 			'trigger-start' => isset($settings['trigger_start']) ? $settings['trigger_start'] : 'top center-=350',
 			'trigger-end' => isset($settings['trigger_end']) ? $settings['trigger_end'] : 'bottom 150%',
 			'scrub' => isset($settings['scrub']['size']) ? $settings['scrub']['size'] : 1,
 			'markers' => (isset($settings['show_markers']) && $settings['show_markers'] == 'yes') ? 'true' : 'false',
 			'pin-spacing' => (isset($settings['pin_spacing']) && $settings['pin_spacing'] == 'yes') ? 'true' : 'false',
 		);
-		$settings['animation_data'] = $animation_data;
 
-		// Enqueue necessary scripts
-		wp_enqueue_script( 'gsap' );
-		wp_enqueue_script( 'tm-scroll-trigger' );
+		// Extract variables for template
+		$title_text = isset($settings['title_text']) ? $settings['title_text'] : '';
+		$title_tag = isset($settings['title_tag']) ? $settings['title_tag'] : 'h4';
+		$title_list = isset($settings['title_list']) ? $settings['title_list'] : array();
 
-		// Produce HTML version by using the template
-		$html = mascot_core_hotelin_get_shortcode_template_part( 'gsap-scroll-pin', null, 'gsap-scroll-pin/tpl', $settings, true );
+		// Include template file
+		include MASCOT_GSAP_PATH . 'widgets/gsap-scroll-pin/tpl/gsap-scroll-pin.php';
+	}
 
-		echo $html;
+	/**
+	 * Get heading tag list
+	 */
+	private function get_heading_tag_list() {
+		return [
+			'h1' => 'H1',
+			'h2' => 'H2',
+			'h3' => 'H3',
+			'h4' => 'H4',
+			'h5' => 'H5',
+			'h6' => 'H6',
+			'div' => 'div',
+			'span' => 'span',
+			'p' => 'p',
+		];
+	}
+
+	/**
+	 * Get theme color list
+	 */
+	private function get_theme_color_list() {
+		return [
+			'' => esc_html__( 'None', 'mascot-gsap' ),
+			'1' => esc_html__( 'Color 1', 'mascot-gsap' ),
+			'2' => esc_html__( 'Color 2', 'mascot-gsap' ),
+			'3' => esc_html__( 'Color 3', 'mascot-gsap' ),
+			'4' => esc_html__( 'Color 4', 'mascot-gsap' ),
+			'5' => esc_html__( 'Color 5', 'mascot-gsap' ),
+		];
+	}
+
+	/**
+	 * Get text align options
+	 */
+	private function get_text_align_options() {
+		return [
+			'left' => [
+				'title' => esc_html__( 'Left', 'mascot-gsap' ),
+				'icon' => 'eicon-text-align-left',
+			],
+			'center' => [
+				'title' => esc_html__( 'Center', 'mascot-gsap' ),
+				'icon' => 'eicon-text-align-center',
+			],
+			'right' => [
+				'title' => esc_html__( 'Right', 'mascot-gsap' ),
+				'icon' => 'eicon-text-align-right',
+			],
+			'justify' => [
+				'title' => esc_html__( 'Justified', 'mascot-gsap' ),
+				'icon' => 'eicon-text-align-justify',
+			],
+		];
 	}
 }
 

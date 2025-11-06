@@ -1,0 +1,54 @@
+/**
+ * GSAP Scroll Pin Widget Styles
+ */
+
+.tm-sc-gsap-scroll-pin {
+    width: 100%;
+    overflow: hidden;
+}
+
+.gsap-scroll-pin-wrapper {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scroll-pin-title {
+    font-size: 4rem;
+    font-weight: bold;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0;
+    transition: all 0.3s ease;
+}
+
+/* Active state */
+.gsap-scroll-pin-active .scroll-pin-title {
+    /* Add any active state styles here */
+}
+
+/* Responsive styles */
+@media (max-width: 1024px) {
+    .scroll-pin-title {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .scroll-pin-title {
+        font-size: 2rem;
+    }
+
+    .gsap-scroll-pin-wrapper {
+        min-height: 50vh;
+    }
+}
+
+@media (max-width: 480px) {
+    .scroll-pin-title {
+        font-size: 1.5rem;
+    }
+}
+

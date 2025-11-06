@@ -78,9 +78,17 @@ final class Mascot_GSAP {
 	}
 
 	/**
-	 * Register GSAP scripts
+	 * Register GSAP scripts and styles
 	 */
 	public function register_scripts() {
+		// GSAP Scroll Pin Widget Style
+		wp_register_style(
+			'mascot-gsap-scroll-pin',
+			MASCOT_GSAP_ASSETS_URL . 'css/gsap-scroll-pin.css',
+			array(),
+			MASCOT_GSAP_VERSION
+		);
+
 		// GSAP Core
 		wp_register_script(
 			'gsap',
