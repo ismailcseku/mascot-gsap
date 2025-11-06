@@ -66,10 +66,38 @@ final class Mascot_GSAP {
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_scripts' ) );
 
+		// Load admin settings (needed globally for settings checks)
+		$this->load_admin();
+
 		// Elementor integration
 		if ( did_action( 'elementor/loaded' ) ) {
 			add_action( 'elementor/frontend/before_register_scripts', array( $this, 'register_scripts' ) );
 		}
+	}
+
+	/**
+	 * Load admin functionality
+	 */
+	private function load_admin() {
+		require_once MASCOT_GSAP_PATH . 'admin/settings.php';
+
+		// Add settings link on plugins page (admin only)
+		if ( is_admin() ) {
+			add_filter( 'plugin_action_links_' . plugin_basename( MASCOT_GSAP_FILE ), array( $this, 'add_plugin_action_links' ) );
+		}
+	}
+
+	/**
+	 * Add settings link on plugins page
+	 */
+	public function add_plugin_action_links( $links ) {
+		$settings_link = sprintf(
+			'<a href="%s">%s</a>',
+			admin_url( 'options-general.php?page=mascot-gsap-settings' ),
+			esc_html__( 'Settings', 'mascot-gsap' )
+		);
+		array_unshift( $links, $settings_link );
+		return $links;
 	}
 	/**
 	 * Initialize the plugin
@@ -84,7 +112,7 @@ final class Mascot_GSAP {
 	 * @access public
 	 */
 	public function init() {
-		require_once( 'shortcode-loader.php' );
+		require_once( 'widgets-loader.php' );
 	}
 
 	/**
@@ -174,6 +202,24 @@ final class Mascot_GSAP {
 			'mascot-gsap-helper',
 			MASCOT_GSAP_ASSETS_URL . 'js/mascot-gsap-helper.js',
 			array( 'jquery', 'gsap' ),
+			MASCOT_GSAP_VERSION,
+			true
+		);
+
+		// Register alias for ScrollTrigger (for theme compatibility)
+		wp_register_script(
+			'tm-scroll-trigger',
+			MASCOT_GSAP_ASSETS_URL . 'js/ScrollTrigger.min.js',
+			array( 'gsap' ),
+			'3.12.5',
+			true
+		);
+
+		// GSAP Scroll Pin Widget
+		wp_register_script(
+			'tm-gsap-scroll-pin',
+			MASCOT_GSAP_ASSETS_URL . 'js/widgets/gsap-scroll-pin.js',
+			array( 'jquery', 'gsap', 'tm-scroll-trigger' ),
 			MASCOT_GSAP_VERSION,
 			true
 		);
