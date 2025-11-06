@@ -60,7 +60,10 @@ class Widgets_Loader {
 	private function include_widgets_files() {
 		foreach( $this->widgets_list() as $widget ) {
 			// Check if this specific widget is enabled before including its file
-			if ( ! \Mascot_GSAP_Admin_Settings::is_widget_enabled( str_replace( '-', '_', $widget ) ) ) {
+			// Convert widget slug to settings key (e.g., 'gsap-scroll-pin' to 'gsap_scroll_pin')
+			$widget_key = str_replace( '-', '_', $widget );
+
+			if ( ! \Mascot_GSAP_Admin_Settings::is_widget_enabled( $widget_key ) ) {
 				continue;
 			}
 
@@ -88,14 +91,12 @@ class Widgets_Loader {
 
 		// Its is now safe to include Widgets files
 		$this->include_widgets_files();
-
 		// Register widgets based on enabled settings
 		foreach( $this->widgets_list() as $widget ) {
-			// Convert widget slug to settings key (e.g., 'gsap-scroll-pin' to 'scroll_pin')
-			$widget_key = str_replace( 'gsap-', '', str_replace( '-', '_', $widget ) );
+			// Convert widget slug to settings key (e.g., 'gsap-scroll-pin' to 'gsap_scroll_pin')
+			$widget_key = str_replace( '-', '_', $widget );
 
 			if ( \Mascot_GSAP_Admin_Settings::is_widget_enabled( $widget_key ) ) {
-				// Convert widget slug to class name (e.g., 'gsap-scroll-pin' to 'GSAP_Scroll_Pin_Widget')
 				$class_name = str_replace( ' ', '_', ucwords( str_replace( '-', ' ', $widget ) ) ) . '_Widget';
 				$full_class = 'MascotGSAP\\Widgets\\' . $class_name;
 
