@@ -1,5 +1,5 @@
 <?php
-namespace MascotCoreHotelin\Widgets;
+namespace MascotGSAP\Widgets;
 
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
@@ -15,41 +15,40 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since 1.0.0
  */
-class TM_Elementor_GSAP_Scroll_Pin extends Widget_Base {
+class GSAP_Scroll_Pin_Widget extends Widget_Base {
 	public function __construct($data = [], $args = null) {
 		parent::__construct($data, $args);
-		$direction_suffix = is_rtl() ? '.rtl' : '';
 
-		wp_register_style( 'tm-gsap-scroll-pin-style', MASCOT_CORE_HOTELIN_ASSETS_URI . '/css/shortcodes/gsap-scroll-pin' . $direction_suffix . '.css' );
-		wp_register_script( 'tm-gsap-scroll-pin', MASCOT_CORE_HOTELIN_ASSETS_URI . '/js/widgets/gsap-scroll-pin.js', array('jquery', 'gsap', 'tm-scroll-trigger'), false, true );
+		// Scripts are registered in the main plugin file
+		// They will be enqueued automatically by Elementor when needed
 	}
 
 	/**
 	 * Retrieve the widget name.
 	 */
 	public function get_name() {
-		return 'tm-ele-gsap-scroll-pin';
+		return 'mascot-gsap-scroll-pin';
 	}
 
 	/**
 	 * Retrieve the widget title.
 	 */
 	public function get_title() {
-		return esc_html__( 'GSAP Scroll Pin', 'mascot-core-hotelin' );
+		return esc_html__( 'GSAP Scroll Pin', 'mascot-gsap' );
 	}
 
 	/**
 	 * Retrieve the widget icon.
 	 */
 	public function get_icon() {
-		return 'tm-elementor-widget-icon';
+		return 'eicon-animation';
 	}
 
 	/**
 	 * Retrieve the list of categories the widget belongs to.
 	 */
 	public function get_categories() {
-		return [ 'tm' ];
+		return [ 'general' ];
 	}
 
 	/**
@@ -57,10 +56,6 @@ class TM_Elementor_GSAP_Scroll_Pin extends Widget_Base {
 	 */
 	public function get_script_depends() {
 		return [ 'gsap', 'tm-scroll-trigger', 'tm-gsap-scroll-pin' ];
-	}
-
-	public function get_style_depends() {
-		return [ 'tm-gsap-scroll-pin-style' ];
 	}
 
 	/**
@@ -71,24 +66,24 @@ class TM_Elementor_GSAP_Scroll_Pin extends Widget_Base {
 		$this->start_controls_section(
 			'content_section',
 			[
-				'label' => esc_html__( 'Content', 'mascot-core-hotelin' ),
+				'label' => esc_html__( 'Content', 'mascot-gsap' ),
 				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
 			]
 		);
 		$this->add_control(
 			'title_text',
 			[
-				'label' => esc_html__( "Title Text", 'mascot-core-hotelin' ),
+				'label' => esc_html__( "Title Text", 'mascot-gsap' ),
 				'type' => \Elementor\Controls_Manager::TEXTAREA,
-				'default' => esc_html__( "Portfolio", 'mascot-core-hotelin' ),
+				'default' => esc_html__( "Portfolio", 'mascot-gsap' ),
 			]
 		);
 		$this->add_control(
 			'title_tag',
 			[
-				'label' => esc_html__( "Title Tag", 'mascot-core-hotelin' ),
+				'label' => esc_html__( "Title Tag", 'mascot-gsap' ),
 				'type' => \Elementor\Controls_Manager::SELECT,
-				'options' => mascot_core_hotelin_heading_tag_list(),
+				'options' => $this->get_heading_tag_list(),
 				'default' => 'h4',
 			]
 		);
