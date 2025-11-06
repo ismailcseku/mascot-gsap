@@ -63,7 +63,7 @@ final class Mascot_GSAP {
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'register_scripts' ) );
-		
+
 		// Elementor integration
 		if ( did_action( 'elementor/loaded' ) ) {
 			add_action( 'elementor/frontend/before_register_scripts', array( $this, 'register_scripts' ) );
