@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Mascot GSAP
+ * Plugin Name: Mascot GSAP Animation
  * Plugin URI: https://thememascot.com/
  * Description: GSAP (GreenSock Animation Platform) integration for WordPress. Provides GSAP library and animation utilities for themes and plugins.
  * Version: 1.0.0
@@ -54,6 +54,8 @@ final class Mascot_GSAP {
 	 */
 	public function __construct() {
 		$this->init_hooks();
+		// Init Plugin
+		add_action( 'plugins_loaded', array( $this, 'init' ) );
 	}
 
 	/**
@@ -68,6 +70,21 @@ final class Mascot_GSAP {
 		if ( did_action( 'elementor/loaded' ) ) {
 			add_action( 'elementor/frontend/before_register_scripts', array( $this, 'register_scripts' ) );
 		}
+	}
+	/**
+	 * Initialize the plugin
+	 *
+	 * Validates that Elementor is already loaded.
+	 * Checks for basic plugin requirements, if one check fail don't continue,
+	 * if all check have passed include the plugin class.
+	 *
+	 * Fired by `plugins_loaded` action hook.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
+	public function init() {
+		require_once( 'shortcode-loader.php' );
 	}
 
 	/**
