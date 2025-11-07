@@ -126,13 +126,6 @@ final class Mascot_GSAP {
 	 * Register GSAP scripts and styles
 	 */
 	public function register_scripts() {
-		// GSAP Scroll Pin Widget Style
-		wp_register_style(
-			'mascot-gsap-scroll-pin',
-			MASCOT_GSAP_ASSETS_URL . 'css/gsap-scroll-pin.css',
-			array(),
-			MASCOT_GSAP_VERSION
-		);
 
 		// GSAP Core
 		wp_register_script(
@@ -197,30 +190,12 @@ final class Mascot_GSAP {
 			true
 		);
 
-		// Custom animation helper
-		wp_register_script(
-			'mascot-gsap-helper',
-			MASCOT_GSAP_ASSETS_URL . 'js/mascot-gsap-helper.js',
-			array( 'jquery', 'gsap' ),
-			MASCOT_GSAP_VERSION,
-			true
-		);
-
 		// Register alias for ScrollTrigger (for theme compatibility)
 		wp_register_script(
 			'tm-scroll-trigger',
 			MASCOT_GSAP_ASSETS_URL . 'js/ScrollTrigger.min.js',
 			array( 'gsap' ),
 			'3.12.5',
-			true
-		);
-
-		// GSAP Scroll Pin Widget
-		wp_register_script(
-			'tm-gsap-scroll-pin',
-			MASCOT_GSAP_ASSETS_URL . 'js/widgets/gsap-scroll-pin.js',
-			array( 'jquery', 'gsap', 'tm-scroll-trigger' ),
-			MASCOT_GSAP_VERSION,
 			true
 		);
 
