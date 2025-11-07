@@ -60,7 +60,7 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 	}
 
 	public function get_style_depends() {
-		return [ 'tm-gsap-scroll-pin-style' ];
+		return [ 'mascot-gsap-scroll-pin' ];
 	}
 
 	/**
