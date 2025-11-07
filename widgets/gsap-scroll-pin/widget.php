@@ -20,8 +20,8 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 		parent::__construct($data, $args);
 		$direction_suffix = is_rtl() ? '.rtl' : '';
 
-		//wp_register_style( 'tm-gsap-scroll-pin-style', MASCOT_CORE_HOTELIN_ASSETS_URI . '/css/shortcodes/gsap-scroll-pin' . $direction_suffix . '.css' );
-		//wp_register_script( 'tm-gsap-scroll-pin', MASCOT_CORE_HOTELIN_ASSETS_URI . '/js/widgets/gsap-scroll-pin.js', array('jquery', 'gsap', 'tm-scroll-trigger'), false, true );
+		wp_register_style( 'mascot-gsap-scroll-pin', MASCOT_GSAP_ASSETS_URL . '/css/widgets/gsap-scroll-pin' . $direction_suffix . '.css' );
+		wp_register_script( 'mascot-gsap-scroll-pin', MASCOT_GSAP_ASSETS_URL . '/js/widgets/gsap-scroll-pin.js', array( 'jquery', 'gsap', 'tm-scroll-trigger' ), false, true );
 	}
 
 	/**
@@ -56,11 +56,11 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 	 * Retrieve the list of scripts the widget depended on.
 	 */
 	public function get_script_depends() {
-		return [ 'gsap', 'tm-scroll-trigger', 'tm-gsap-scroll-pin' ];
+		return [ '' ];
 	}
 
 	public function get_style_depends() {
-		return [ 'mascot-gsap-scroll-pin' ];
+		return [ '' ];
 	}
 
 	/**
@@ -569,6 +569,9 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 	 */
 	protected function render() {
 		$settings = $this->get_settings_for_display();
+
+		wp_enqueue_style( array( 'mascot-gsap-scroll-pin' ) );
+		wp_enqueue_script( array( 'gsap', 'tm-scroll-trigger','mascot-gsap-scroll-pin' ) );
 
 		// Build classes array
 		$classes = array();
