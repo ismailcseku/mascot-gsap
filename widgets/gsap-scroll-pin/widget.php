@@ -16,12 +16,20 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @since 1.0.0
  */
 class GSAP_Scroll_Pin_Widget extends Widget_Base {
+	private static $scripts_registered = false;
+
 	public function __construct($data = [], $args = null) {
 		parent::__construct($data, $args);
-		$direction_suffix = is_rtl() ? '.rtl' : '';
 
-		wp_register_style( 'mascot-gsap-scroll-pin', MASCOT_GSAP_ASSETS_URL . '/css/widgets/gsap-scroll-pin' . $direction_suffix . '.css' );
-		wp_register_script( 'mascot-gsap-scroll-pin', MASCOT_GSAP_ASSETS_URL . '/js/widgets/gsap-scroll-pin.js', array( 'jquery', 'gsap', 'tm-scroll-trigger' ), false, true );
+		// Register scripts and styles only once
+		if ( ! self::$scripts_registered ) {
+			$direction_suffix = is_rtl() ? '.rtl' : '';
+
+			wp_register_style( 'mascot-gsap-scroll-pin', MASCOT_GSAP_ASSETS_URL . '/css/widgets/gsap-scroll-pin' . $direction_suffix . '.css' );
+			wp_register_script( 'mascot-gsap-scroll-pin', MASCOT_GSAP_ASSETS_URL . '/js/widgets/gsap-scroll-pin.js', array( 'jquery', 'gsap', 'tm-scroll-trigger' ), false, true );
+
+			self::$scripts_registered = true;
+		}
 	}
 
 	/**
@@ -56,7 +64,7 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 	 * Retrieve the list of scripts the widget depended on.
 	 */
 	public function get_script_depends() {
-		return [ 'gsap', 'tm-scroll-trigger', 'mascot-gsap-scroll-pin' ];
+		return [ 'mascot-gsap-scroll-pin' ];
 	}
 
 	public function get_style_depends() {
@@ -367,8 +375,8 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 			[
 				'label' => esc_html__( 'Trigger End', 'mascot-gsap' ),
 				'type' => Controls_Manager::TEXT,
-				'default' => 'bottom 150%',
-				'description' => esc_html__( 'When the animation ends (e.g., "bottom center", "bottom 150%")', 'mascot-gsap' ),
+				'default' => 'bottom 30%',
+				'description' => esc_html__( 'When the animation ends (e.g., "bottom center", "bottom 30%")', 'mascot-gsap' ),
 			]
 		);
 		$this->add_control(
@@ -585,7 +593,7 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 			'hold-duration' => isset($settings['hold_duration']['size']) ? $settings['hold_duration']['size'] : 4,
 			'hold-delay' => isset($settings['hold_delay']['size']) ? $settings['hold_delay']['size'] : 4,
 			'trigger-start' => isset($settings['trigger_start']) ? $settings['trigger_start'] : 'top center-=350',
-			'trigger-end' => isset($settings['trigger_end']) ? $settings['trigger_end'] : 'bottom 150%',
+			'trigger-end' => isset($settings['trigger_end']) ? $settings['trigger_end'] : 'bottom 30%',
 			'scrub' => isset($settings['scrub']['size']) ? $settings['scrub']['size'] : 1,
 			'markers' => (isset($settings['show_markers']) && $settings['show_markers'] == 'yes') ? 'true' : 'false',
 			'pin-spacing' => (isset($settings['pin_spacing']) && $settings['pin_spacing'] == 'yes') ? 'true' : 'false',
