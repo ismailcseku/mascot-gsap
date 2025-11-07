@@ -5,7 +5,7 @@
    * GSAP Scroll Pin Animation
    * Initialize scroll-triggered animation with pinned title effect
    */
-  var TMGSAPScrollPin = function () {
+  var MascotGSAPScrollPin = function () {
     // Check if GSAP and ScrollTrigger are loaded
     if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") {
       console.warn("GSAP or ScrollTrigger not loaded. Please ensure GSAP library is included.");
@@ -15,6 +15,7 @@
     // Register ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger);
 
+      console.log(settings);
     // Initialize animation for each instance
     $(".mascot-gsap-scroll-pin .scroll-pin-wrapper[data-gsap-scroll-pin]").each(function () {
       var $this = $(this);
@@ -22,7 +23,7 @@
 
       // Get animation settings from data attribute
       var settings = $this.data("gsap-scroll-pin");
-
+      console.log(settings);
       // Default settings if not provided
       if (!settings) {
         settings = {
@@ -104,7 +105,7 @@
    * Initialize on document ready
    */
   $(document).ready(function () {
-    TMGSAPScrollPin();
+    MascotGSAPScrollPin();
   });
 
   /**
@@ -112,8 +113,8 @@
    */
   $(window).on("elementor/frontend/init", function () {
     if (typeof elementorFrontend !== "undefined") {
-      elementorFrontend.hooks.addAction("frontend/element_ready/tm-ele-gsap-scroll-pin.default", function ($scope) {
-        TMGSAPScrollPin();
+      elementorFrontend.hooks.addAction("frontend/element_ready/mascot-gsap-scroll-pin.default", function ($scope) {
+        MascotGSAPScrollPin();
       });
     }
   });
