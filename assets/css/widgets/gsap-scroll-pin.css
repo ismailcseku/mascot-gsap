@@ -5,7 +5,7 @@
 .mascot-gsap-scroll-pin {
   position: relative;
 }
-.mascot-gsap-scroll-pin .gsap-scroll-pin-wrapper {
+.mascot-gsap-scroll-pin .scroll-pin-wrapper {
   position: relative;
   width: 100%;
   display: flex;

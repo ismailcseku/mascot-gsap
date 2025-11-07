@@ -415,7 +415,7 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 				'label_block' => false,
 				'options' => $this->get_text_align_options(),
 				'selectors' => [
-					'{{WRAPPER}} .gsap-scroll-pin-wrapper' => 'text-align: {{VALUE}};'
+					'{{WRAPPER}} .scroll-pin-wrapper' => 'text-align: {{VALUE}};'
 				]
 			]
 		);
@@ -548,7 +548,7 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => [ 'px', '%', 'em' ],
 				'selectors' => [
-					'{{WRAPPER}} .gsap-scroll-pin-wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .scroll-pin-wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -558,7 +558,7 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 				'name' => 'container_background',
 				'label' => esc_html__( 'Background', 'mascot-gsap' ),
 				'types' => [ 'classic', 'gradient' ],
-				'selector' => '{{WRAPPER}} .gsap-scroll-pin-wrapper',
+				'selector' => '{{WRAPPER}} .scroll-pin-wrapper',
 			]
 		);
 		$this->end_controls_section();
