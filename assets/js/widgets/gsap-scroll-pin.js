@@ -70,47 +70,46 @@
       // Parse scale animation value
       var scaleEnabled = settings["enable-scale"] === "true" || settings["enable-scale"] === true;
 
-      console.log($parent[0]);
-      // Create the timeline
-      // var projectText = gsap.timeline({
-      //   scrollTrigger: {
-      //     trigger: $parent[0],
-      //     start: settings["trigger-start"],
-      //     end: settings["trigger-end"],
-      //     pin: $title[0],
-      //     markers: markersValue,
-      //     pinSpacing: pinSpacingValue,
-      //     scrub: scrubValue,
-      //   },
-      // });
-
-      let project_text = gsap.timeline({
+      //Create the timeline
+      var projectText = gsap.timeline({
         scrollTrigger: {
           trigger: $parent[0],
-          start: "top 35%",
-          end: "bottom 85%",
+          start: settings["trigger-start"],
+          end: settings["trigger-end"],
           pin: $title[0],
-          markers: true,
-          pinSpacing: false,
-          scrub: 1,
+          markers: markersValue,
+          pinSpacing: pinSpacingValue,
+          scrub: scrubValue,
         },
       });
-      project_text.set($title[0], {
-        scale: 0.9,
-        duration: 2,
-      });
-      project_text.to($title[0], {
-        scale: 1.2,
-        duration: 2,
-      });
-      project_text.to(
-        $title[0],
-        {
-          scale: 1.2,
-          duration: 2,
-        },
-        "+=2"
-      );
+
+      // Set initial state (scale)
+      var initialState = {
+        duration: settings.duration,
+      };
+      if (scaleEnabled) {
+        initialState.scale = settings["initial-scale"];
+      }
+      projectText.set($title[0], initialState);
+
+      // Animate to final state (scale)
+      var finalState = {
+        duration: settings.duration,
+      };
+      if (scaleEnabled) {
+        finalState.scale = settings["final-scale"];
+      }
+      projectText.to($title[0], finalState);
+
+      // Hold at final state
+      var holdState = {
+        duration: settings["hold-duration"] || settings.duration,
+      };
+      if (scaleEnabled) {
+        holdState.scale = settings["final-scale"];
+      }
+      var holdDelay = settings["hold-delay"] || settings.duration;
+      projectText.to($title[0], holdState, "+=" + holdDelay);
 
       // Mark as initialized to prevent duplicate initialization
       $this.data("gsap-scroll-pin-initialized", true);
