@@ -56,7 +56,7 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 	 * Retrieve the list of scripts the widget depended on.
 	 */
 	public function get_script_depends() {
-		return [ 'gsap', 'tm-scroll-trigger', 'tm-gsap-scroll-pin' ];
+		return [ 'gsap', 'tm-scroll-trigger', 'mascot-gsap-scroll-pin' ];
 	}
 
 	public function get_style_depends() {
