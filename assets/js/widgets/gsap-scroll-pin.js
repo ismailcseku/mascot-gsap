@@ -16,7 +16,7 @@
     gsap.registerPlugin(ScrollTrigger);
 
     // Initialize animation for each instance
-    $(".tm-sc-gsap-scroll-pin .gsap-scroll-pin-wrapper[data-gsap-scroll-pin]").each(function () {
+    $(".mascot-gsap-scroll-pin .gsap-scroll-pin-wrapper[data-gsap-scroll-pin]").each(function () {
       var $this = $(this);
       var $title = $this.find(".scroll-pin-title");
 

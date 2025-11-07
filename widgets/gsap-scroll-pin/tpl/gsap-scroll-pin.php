@@ -1,4 +1,4 @@
-<div class="tm-sc-gsap-scroll-pin <?php if( !empty($classes) ) echo esc_attr(implode(' ', $classes)); ?>">
+<div class="mascot-gsap-scroll-pin <?php if( !empty($classes) ) echo esc_attr(implode(' ', $classes)); ?>">
 	<div class="gsap-scroll-pin-wrapper" data-gsap-scroll-pin='<?php echo esc_attr( json_encode( $animation_data ) ); ?>'>
 		<?php
 		$title_tag = isset($title_tag) ? $title_tag : 'h4';

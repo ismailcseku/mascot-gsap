@@ -2,17 +2,17 @@
  * GSAP Scroll Pin Widget Styles
  * Shortcode SCSS File
  */
-.tm-sc-gsap-scroll-pin {
+.mascot-gsap-scroll-pin {
   position: relative;
 }
-.tm-sc-gsap-scroll-pin .gsap-scroll-pin-wrapper {
+.mascot-gsap-scroll-pin .gsap-scroll-pin-wrapper {
   position: relative;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.tm-sc-gsap-scroll-pin .scroll-pin-title {
+.mascot-gsap-scroll-pin .scroll-pin-title {
   position: relative;
   margin: 0;
   padding: 20px;
@@ -22,6 +22,6 @@
   transform-origin: center center;
 }
 
-[dir=rtl] .tm-sc-gsap-scroll-pin .scroll-pin-title {
+[dir=rtl] .mascot-gsap-scroll-pin .scroll-pin-title {
   direction: ltr;
 }
