@@ -56,11 +56,11 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 	 * Retrieve the list of scripts the widget depended on.
 	 */
 	public function get_script_depends() {
-		return [ '' ];
+		return [ 'gsap', 'tm-scroll-trigger', 'tm-gsap-scroll-pin' ];
 	}
 
 	public function get_style_depends() {
-		return [ '' ];
+		return [ 'mascot-gsap-scroll-pin' ];
 	}
 
 	/**
@@ -569,9 +569,6 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 	 */
 	protected function render() {
 		$settings = $this->get_settings_for_display();
-
-		wp_enqueue_style( array( 'mascot-gsap-scroll-pin' ) );
-		wp_enqueue_script( array( 'gsap', 'tm-scroll-trigger','mascot-gsap-scroll-pin' ) );
 
 		// Build classes array
 		$classes = array();
