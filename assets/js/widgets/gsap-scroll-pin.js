@@ -19,6 +19,7 @@
     $(".mascot-gsap-scroll-pin .scroll-pin-wrapper[data-gsap-scroll-pin]").each(function () {
       var $this = $(this);
       var $title = $this.find(".scroll-pin-title");
+      var $parent = $this.closest(".e-parent");
 
       // Get animation settings from data attribute
       var settings = $this.data("gsap-scroll-pin");
@@ -60,7 +61,7 @@
       // Create the timeline
       var projectText = gsap.timeline({
         scrollTrigger: {
-          trigger: $this.closest(".e-parent")[0],
+          trigger: $parent[0],
           start: settings["trigger-start"],
           end: settings["trigger-end"],
           pin: $title[0],
