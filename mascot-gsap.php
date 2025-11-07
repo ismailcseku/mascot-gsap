@@ -130,7 +130,7 @@ final class Mascot_GSAP {
 		// GSAP Core
 		wp_register_script(
 			'gsap',
-			MASCOT_GSAP_ASSETS_URL . 'js/gsap.min.js',
+			MASCOT_GSAP_ASSETS_URL . 'js/plugins/gsap.min.js',
 			array(),
 			'3.12.5',
 			true
@@ -139,7 +139,7 @@ final class Mascot_GSAP {
 		// ScrollTrigger Plugin
 		wp_register_script(
 			'gsap-scrolltrigger',
-			MASCOT_GSAP_ASSETS_URL . 'js/ScrollTrigger.min.js',
+			MASCOT_GSAP_ASSETS_URL . 'js/plugins/ScrollTrigger.min.js',
 			array( 'gsap' ),
 			'3.12.5',
 			true
@@ -148,7 +148,7 @@ final class Mascot_GSAP {
 		// ScrollToPlugin
 		wp_register_script(
 			'gsap-scrollto',
-			MASCOT_GSAP_ASSETS_URL . 'js/ScrollToPlugin.min.js',
+			MASCOT_GSAP_ASSETS_URL . 'js/plugins/ScrollToPlugin.min.js',
 			array( 'gsap' ),
 			'3.12.5',
 			true
@@ -157,7 +157,7 @@ final class Mascot_GSAP {
 		// Draggable Plugin
 		wp_register_script(
 			'gsap-draggable',
-			MASCOT_GSAP_ASSETS_URL . 'js/Draggable.min.js',
+			MASCOT_GSAP_ASSETS_URL . 'js/plugins/Draggable.min.js',
 			array( 'gsap' ),
 			'3.12.5',
 			true
@@ -166,7 +166,7 @@ final class Mascot_GSAP {
 		// MotionPathPlugin
 		wp_register_script(
 			'gsap-motionpath',
-			MASCOT_GSAP_ASSETS_URL . 'js/MotionPathPlugin.min.js',
+			MASCOT_GSAP_ASSETS_URL . 'js/plugins/MotionPathPlugin.min.js',
 			array( 'gsap' ),
 			'3.12.5',
 			true
@@ -175,7 +175,7 @@ final class Mascot_GSAP {
 		// EasePack
 		wp_register_script(
 			'gsap-easepack',
-			MASCOT_GSAP_ASSETS_URL . 'js/EasePack.min.js',
+			MASCOT_GSAP_ASSETS_URL . 'js/plugins/EasePack.min.js',
 			array( 'gsap' ),
 			'3.12.5',
 			true
@@ -184,7 +184,7 @@ final class Mascot_GSAP {
 		// TextPlugin
 		wp_register_script(
 			'gsap-text',
-			MASCOT_GSAP_ASSETS_URL . 'js/TextPlugin.min.js',
+			MASCOT_GSAP_ASSETS_URL . 'js/plugins/TextPlugin.min.js',
 			array( 'gsap' ),
 			'3.12.5',
 			true
@@ -193,7 +193,7 @@ final class Mascot_GSAP {
 		// Register alias for ScrollTrigger (for theme compatibility)
 		wp_register_script(
 			'tm-scroll-trigger',
-			MASCOT_GSAP_ASSETS_URL . 'js/ScrollTrigger.min.js',
+			MASCOT_GSAP_ASSETS_URL . 'js/plugins/ScrollTrigger.min.js',
 			array( 'gsap' ),
 			'3.12.5',
 			true
