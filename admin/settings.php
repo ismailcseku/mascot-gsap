@@ -89,6 +89,15 @@ class Mascot_GSAP_Admin_Settings {
 			self::PAGE_SLUG,
 			'mascot_gsap_elementor_section'
 		);
+
+		// GSAP Image Gallery Widget
+		add_settings_field(
+			'enable_gsap_image_gallery_widget',
+			esc_html__( 'GSAP Image Gallery Widget', 'mascot-gsap' ),
+			array( $this, 'render_enable_gsap_image_gallery_widget_field' ),
+			self::PAGE_SLUG,
+			'mascot_gsap_elementor_section'
+		);
 	}
 
 	/**
@@ -149,6 +158,28 @@ class Mascot_GSAP_Admin_Settings {
 		</label>
 		<p class="description">
 			<?php esc_html_e( 'Scroll-triggered pinned title animation widget with customizable scale effects.', 'mascot-gsap' ); ?>
+		</p>
+		<?php
+	}
+
+	/**
+	 * Render enable GSAP image gallery widget field
+	 */
+	public function render_enable_gsap_image_gallery_widget_field() {
+		$settings = get_option( self::OPTION_NAME, $this->get_default_settings() );
+		$enabled = isset( $settings['enable_gsap_image_gallery_widget'] ) ? $settings['enable_gsap_image_gallery_widget'] : true;
+		$master_enabled = isset( $settings['enable_elementor_widgets'] ) ? $settings['enable_elementor_widgets'] : true;
+		?>
+		<label>
+			<input type="checkbox"
+				   name="<?php echo esc_attr( self::OPTION_NAME ); ?>[enable_gsap_image_gallery_widget]"
+				   value="1"
+				   <?php checked( $enabled, true ); ?>
+				   <?php disabled( ! $master_enabled ); ?>>
+			<?php esc_html_e( 'Enable GSAP Image Gallery Widget', 'mascot-gsap' ); ?>
+		</label>
+		<p class="description">
+			<?php esc_html_e( 'Animated gallery layout where the main image scales on scroll and surrounding thumbs frame it.', 'mascot-gsap' ); ?>
 		</p>
 		<?php
 	}
@@ -255,6 +286,7 @@ class Mascot_GSAP_Admin_Settings {
 		// Sanitize checkbox fields
 		$sanitized['enable_elementor_widgets'] = ! empty( $settings['enable_elementor_widgets'] ) ? true : false;
 		$sanitized['enable_gsap_scroll_pin_widget'] = ! empty( $settings['enable_gsap_scroll_pin_widget'] ) ? true : false;
+		$sanitized['enable_gsap_image_gallery_widget'] = ! empty( $settings['enable_gsap_image_gallery_widget'] ) ? true : false;
 
 		return $sanitized;
 	}
@@ -266,6 +298,7 @@ class Mascot_GSAP_Admin_Settings {
 		return array(
 			'enable_elementor_widgets' => true,
 			'enable_gsap_scroll_pin_widget' => true,
+			'enable_gsap_image_gallery_widget' => true,
 		);
 	}
 
@@ -278,6 +311,9 @@ class Mascot_GSAP_Admin_Settings {
 
 		if ( ! empty( $settings['enable_elementor_widgets'] ) ) {
 			if ( ! empty( $settings['enable_gsap_scroll_pin_widget'] ) ) {
+				$count++;
+			}
+			if ( ! empty( $settings['enable_gsap_image_gallery_widget'] ) ) {
 				$count++;
 			}
 			// Add more widgets count here as they are added

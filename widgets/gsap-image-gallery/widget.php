@@ -1,0 +1,423 @@
+<?php
+namespace MascotGSAP\Widgets;
+
+use Elementor\Controls_Manager;
+use Elementor\Widget_Base;
+use Elementor\Utils;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
+/**
+ * Elementor GSAP Image Gallery Widget
+ *
+ * Provides a scroll-triggered image gallery animation powered by GSAP.
+ *
+ * @since 1.0.0
+ */
+class GSAP_Image_Gallery_Widget extends Widget_Base {
+	/**
+	 * Track whether scripts/styles have been registered.
+	 *
+	 * @var bool
+	 */
+	private static $assets_registered = false;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param array      $data Widget data.
+	 * @param array|null $args Widget arguments.
+	 */
+	public function __construct( $data = [], $args = null ) {
+		parent::__construct( $data, $args );
+
+		if ( ! self::$assets_registered ) {
+			$direction_suffix = is_rtl() ? '.rtl' : '';
+
+			wp_register_style(
+				'mascot-gsap-image-gallery',
+				MASCOT_GSAP_ASSETS_URL . 'css/widgets/gsap-image-gallery' . $direction_suffix . '.css',
+				[],
+				MASCOT_GSAP_VERSION
+			);
+
+			wp_register_script(
+				'mascot-gsap-image-gallery',
+				MASCOT_GSAP_ASSETS_URL . 'js/widgets/gsap-image-gallery.js',
+				[ 'jquery', 'gsap', 'tm-scroll-trigger' ],
+				MASCOT_GSAP_VERSION,
+				true
+			);
+
+			self::$assets_registered = true;
+		}
+	}
+
+	/**
+	 * Retrieve the widget name.
+	 *
+	 * @return string
+	 */
+	public function get_name() {
+		return 'mascot-gsap-image-gallery';
+	}
+
+	/**
+	 * Retrieve the widget title.
+	 *
+	 * @return string
+	 */
+	public function get_title() {
+		return esc_html__( 'GSAP Image Gallery - Mascot', 'mascot-gsap' );
+	}
+
+	/**
+	 * Retrieve the widget icon.
+	 *
+	 * @return string
+	 */
+	public function get_icon() {
+		return 'tm-elementor-widget-icon';
+	}
+
+	/**
+	 * Retrieve the list of categories the widget belongs to.
+	 *
+	 * @return array
+	 */
+	public function get_categories() {
+		return [ 'tm-gsap' ];
+	}
+
+	/**
+	 * Retrieve the list of scripts the widget depends on.
+	 *
+	 * @return array
+	 */
+	public function get_script_depends() {
+		return [ 'mascot-gsap-image-gallery' ];
+	}
+
+	/**
+	 * Retrieve the list of styles the widget depends on.
+	 *
+	 * @return array
+	 */
+	public function get_style_depends() {
+		return [ 'mascot-gsap-image-gallery' ];
+	}
+
+	/**
+	 * Register widget controls.
+	 *
+	 * @return void
+	 */
+	protected function register_controls() {
+		$this->start_controls_section(
+			'content_section',
+			[
+				'label' => esc_html__( 'Images', 'mascot-gsap' ),
+				'tab'   => Controls_Manager::TAB_CONTENT,
+			]
+		);
+
+		$this->add_control(
+			'main_image',
+			[
+				'label'   => esc_html__( 'Main Image', 'mascot-gsap' ),
+				'type'    => Controls_Manager::MEDIA,
+				'default' => [
+					'url' => Utils::get_placeholder_image_src(),
+				],
+			]
+		);
+
+		for ( $i = 1; $i <= 7; $i++ ) {
+			$this->add_control(
+				'gallery_image_' . $i,
+				[
+					'label'       => sprintf(
+						/* translators: %d: Thumb index */
+						esc_html__( 'Surrounding Image %d', 'mascot-gsap' ),
+						$i
+					),
+					'type'        => Controls_Manager::MEDIA,
+					'default'     => [
+						'url' => '',
+					],
+					'description' => esc_html__( 'Displayed around the main image on desktop screens.', 'mascot-gsap' ),
+				]
+			);
+		}
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'animation_settings',
+			[
+				'label' => esc_html__( 'Animation', 'mascot-gsap' ),
+				'tab'   => Controls_Manager::TAB_CONTENT,
+			]
+		);
+
+		$this->add_control(
+			'trigger_start',
+			[
+				'label'       => esc_html__( 'Trigger Start', 'mascot-gsap' ),
+				'type'        => Controls_Manager::TEXT,
+				'default'     => 'top 30%',
+				'description' => esc_html__( 'Scroll position that starts the animation (e.g., "top 30%").', 'mascot-gsap' ),
+			]
+		);
+
+		$this->add_control(
+			'trigger_end',
+			[
+				'label'       => esc_html__( 'Trigger End', 'mascot-gsap' ),
+				'type'        => Controls_Manager::TEXT,
+				'default'     => 'bottom 100%',
+				'description' => esc_html__( 'Scroll position that ends the animation (e.g., "bottom 100%").', 'mascot-gsap' ),
+			]
+		);
+
+		$this->add_control(
+			'enable_pin',
+			[
+				'label'        => esc_html__( 'Pin Section', 'mascot-gsap' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Yes', 'mascot-gsap' ),
+				'label_off'    => esc_html__( 'No', 'mascot-gsap' ),
+				'return_value' => 'yes',
+				'default'      => 'yes',
+				'description'  => esc_html__( 'Enable ScrollTrigger pinning for the gallery section.', 'mascot-gsap' ),
+			]
+		);
+
+		$this->add_control(
+			'pin_spacing',
+			[
+				'label'        => esc_html__( 'Pin Spacing', 'mascot-gsap' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'On', 'mascot-gsap' ),
+				'label_off'    => esc_html__( 'Off', 'mascot-gsap' ),
+				'return_value' => 'yes',
+				'default'      => '',
+				'description'  => esc_html__( 'Keep page spacing while the section is pinned.', 'mascot-gsap' ),
+			]
+		);
+
+		$this->add_control(
+			'show_markers',
+			[
+				'label'        => esc_html__( 'Debug Markers', 'mascot-gsap' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Show', 'mascot-gsap' ),
+				'label_off'    => esc_html__( 'Hide', 'mascot-gsap' ),
+				'return_value' => 'yes',
+				'default'      => '',
+			]
+		);
+
+		$this->add_control(
+			'animation_duration',
+			[
+				'label'   => esc_html__( 'Animation Duration', 'mascot-gsap' ),
+				'type'    => Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'range'   => [
+					'px' => [
+						'min'  => 0.5,
+						'max'  => 10,
+						'step' => 0.1,
+					],
+				],
+				'default' => [
+					'unit' => 'px',
+					'size' => 3,
+				],
+			]
+		);
+
+		$this->add_control(
+			'animation_scrub',
+			[
+				'label'   => esc_html__( 'Scrub Amount', 'mascot-gsap' ),
+				'type'    => Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'range'   => [
+					'px' => [
+						'min'  => 0,
+						'max'  => 5,
+						'step' => 0.1,
+					],
+				],
+				'default' => [
+					'unit' => 'px',
+					'size' => 1,
+				],
+				'description' => esc_html__( 'Smoothness of the animation. Set to 0 to disable scrubbing.', 'mascot-gsap' ),
+			]
+		);
+
+		$this->add_control(
+			'final_image_size',
+			[
+				'label'   => esc_html__( 'Final Image Size', 'mascot-gsap' ),
+				'type'    => Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'range'   => [
+					'px' => [
+						'min' => 200,
+						'max' => 1000,
+					],
+				],
+				'default' => [
+					'unit' => 'px',
+					'size' => 580,
+				],
+				'description' => esc_html__( 'Width/height applied to the main image at the end of the animation.', 'mascot-gsap' ),
+			]
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'general_settings',
+			[
+				'label' => esc_html__( 'General', 'mascot-gsap' ),
+				'tab'   => Controls_Manager::TAB_CONTENT,
+			]
+		);
+
+		$this->add_control(
+			'custom_css_class',
+			[
+				'label'       => esc_html__( 'Custom CSS Class', 'mascot-gsap' ),
+				'type'        => Controls_Manager::TEXT,
+				'description' => esc_html__( 'Add an optional CSS class to the outer wrapper.', 'mascot-gsap' ),
+			]
+		);
+
+		$this->add_responsive_control(
+			'alignment',
+			[
+				'label'     => esc_html__( 'Alignment', 'mascot-gsap' ),
+				'type'      => Controls_Manager::CHOOSE,
+				'options'   => [
+					'left'   => [
+						'title' => esc_html__( 'Left', 'mascot-gsap' ),
+						'icon'  => 'eicon-text-align-left',
+					],
+					'center' => [
+						'title' => esc_html__( 'Center', 'mascot-gsap' ),
+						'icon'  => 'eicon-text-align-center',
+					],
+					'right'  => [
+						'title' => esc_html__( 'Right', 'mascot-gsap' ),
+						'icon'  => 'eicon-text-align-right',
+					],
+				],
+				'default'   => 'center',
+				'selectors' => [
+					'{{WRAPPER}} .gallery-area' => 'text-align: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->end_controls_section();
+	}
+
+	/**
+	 * Render widget output on the frontend.
+	 *
+	 * @return void
+	 */
+	protected function render() {
+		$settings = $this->get_settings_for_display();
+
+		$classes = [ 'mascot-gsap-image-gallery' ];
+		if ( ! empty( $settings['custom_css_class'] ) ) {
+			$classes[] = sanitize_html_class( $settings['custom_css_class'] );
+		}
+
+		$animation_data = [
+			'trigger-start' => ! empty( $settings['trigger_start'] ) ? $settings['trigger_start'] : 'top 30%',
+			'trigger-end'   => ! empty( $settings['trigger_end'] ) ? $settings['trigger_end'] : 'bottom 100%',
+			'pin'           => ( isset( $settings['enable_pin'] ) && 'yes' === $settings['enable_pin'] ) ? 'true' : 'false',
+			'pin-spacing'   => ( isset( $settings['pin_spacing'] ) && 'yes' === $settings['pin_spacing'] ) ? 'true' : 'false',
+			'markers'       => ( isset( $settings['show_markers'] ) && 'yes' === $settings['show_markers'] ) ? 'true' : 'false',
+			'duration'      => isset( $settings['animation_duration']['size'] ) ? $settings['animation_duration']['size'] : 3,
+			'scrub'         => isset( $settings['animation_scrub']['size'] ) ? $settings['animation_scrub']['size'] : 1,
+			'final-size'    => isset( $settings['final_image_size']['size'] ) ? $settings['final_image_size']['size'] : 580,
+			'breakpoint'    => 1200,
+		];
+
+		$main_image = $this->prepare_image( isset( $settings['main_image'] ) ? $settings['main_image'] : [], esc_html__( 'Main gallery image', 'mascot-gsap' ), true );
+
+		$surrounding_images = [];
+		for ( $i = 1; $i <= 7; $i++ ) {
+			$key                       = 'gallery_image_' . $i;
+			$surrounding_images[ $i ]  = $this->prepare_image(
+				isset( $settings[ $key ] ) ? $settings[ $key ] : [],
+				sprintf(
+					/* translators: %d: Thumb index */
+					esc_html__( 'Gallery image %d', 'mascot-gsap' ),
+					$i
+				),
+				false
+			);
+		}
+
+		include MASCOT_GSAP_PATH . 'widgets/gsap-image-gallery/tpl/gsap-image-gallery.php';
+	}
+
+	/**
+	 * Prepare image data for output.
+	 *
+	 * @param array  $image_control     Control value.
+	 * @param string $default_alt       Default alt text.
+	 * @param bool   $allow_placeholder Allow using a placeholder image when no image provided.
+	 *
+	 * @return array
+	 */
+	private function prepare_image( $image_control, $default_alt = '', $allow_placeholder = true ) {
+		$url = '';
+		$alt = $default_alt;
+
+		if ( isset( $image_control['id'] ) && $image_control['id'] ) {
+			$url = wp_get_attachment_image_url( $image_control['id'], 'full' );
+			if ( empty( $alt ) ) {
+				$alt = get_post_meta( $image_control['id'], '_wp_attachment_image_alt', true );
+			}
+
+			if ( empty( $alt ) ) {
+				$alt = get_the_title( $image_control['id'] );
+			}
+		} elseif ( isset( $image_control['url'] ) && ! empty( $image_control['url'] ) ) {
+			$url = $image_control['url'];
+		}
+
+		if ( empty( $url ) ) {
+			if ( ! $allow_placeholder ) {
+				return [
+					'url' => '',
+					'alt' => '',
+				];
+			}
+			$url = Utils::get_placeholder_image_src();
+		}
+
+		if ( empty( $alt ) && $allow_placeholder ) {
+			$alt = esc_html__( 'Gallery image', 'mascot-gsap' );
+		}
+
+		return [
+			'url' => $url,
+			'alt' => $alt,
+		];
+	}
+}
+
+

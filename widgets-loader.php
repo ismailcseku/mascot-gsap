@@ -42,6 +42,7 @@ class Widgets_Loader {
 	public function widgets_list() {
 		$this->widgets = array(
 			'gsap-scroll-pin',
+			'gsap-image-gallery',
 		);
 
 

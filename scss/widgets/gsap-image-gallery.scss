@@ -1,0 +1,64 @@
+.gallery {
+  &-thumb {
+    height: 100%;
+    margin: 0 auto;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    & img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      background-position: center;
+      background-size: cover;
+      margin: 0 auto;
+    }
+    &-wrap {
+      display: inline-block;
+      margin: 0 auto;
+			position: relative;
+    }
+    &-inner {
+      &-1 {
+        position: absolute;
+        top: -45%;
+        left: 7%;
+        & img {
+          width: 500px;
+          height: 230px;
+          object-fit: cover;
+        }
+      }
+      &-2 {
+        position: absolute;
+        top: -31%;
+        left: -72%;
+      }
+      &-3 {
+        position: absolute;
+        bottom: 5%;
+        left: -63%;
+      }
+      &-4 {
+        position: absolute;
+        bottom: 6%;
+        right: -95%;
+      }
+      &-5 {
+        position: absolute;
+        bottom: -58%;
+        left: -28%;
+      }
+      &-6 {
+        position: absolute;
+        bottom: -58%;
+        right: -16%;
+      }
+      &-7 {
+        position: absolute;
+        top: -37%;
+        right: -56%;
+      }
+    }
+  }
+}
