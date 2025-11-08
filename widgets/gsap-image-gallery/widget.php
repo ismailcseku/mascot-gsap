@@ -1,9 +1,10 @@
 <?php
 namespace MascotGSAP\Widgets;
 
-use Elementor\Controls_Manager;
 use Elementor\Widget_Base;
 use Elementor\Utils;
+use Elementor\Controls_Manager;
+use Elementor\Repeater;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -134,23 +135,110 @@ class GSAP_Image_Gallery_Widget extends Widget_Base {
 			]
 		);
 
-		for ( $i = 1; $i <= 7; $i++ ) {
-			$this->add_control(
-				'gallery_image_' . $i,
-				[
-					'label'       => sprintf(
-						/* translators: %d: Thumb index */
-						esc_html__( 'Surrounding Image %d', 'mascot-gsap' ),
-						$i
-					),
-					'type'        => Controls_Manager::MEDIA,
-					'default'     => [
-						'url' => '',
-					],
-					'description' => esc_html__( 'Displayed around the main image on desktop screens.', 'mascot-gsap' ),
-				]
-			);
-		}
+		$repeater = new Repeater();
+		$repeater->add_control(
+			'item_image',
+			[
+				'label'   => esc_html__( 'Image', 'mascot-gsap' ),
+				'type'    => Controls_Manager::MEDIA,
+				'default' => [
+					'url' => Utils::get_placeholder_image_src(),
+				],
+			]
+		);
+		$repeater->add_control(
+			'horizontal_anchor',
+			[
+				'label'   => esc_html__( 'Horizontal Anchor', 'mascot-gsap' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'left',
+				'options' => [
+					'left'  => esc_html__( 'Left', 'mascot-gsap' ),
+					'right' => esc_html__( 'Right', 'mascot-gsap' ),
+				],
+			]
+		);
+		$repeater->add_responsive_control(
+			'horizontal_offset',
+			[
+				'label'      => esc_html__( 'Horizontal Offset', 'mascot-gsap' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', '%' ],
+				'default'    => [
+					'unit' => '%',
+					'size' => 0,
+				],
+			]
+		);
+		$repeater->add_control(
+			'vertical_anchor',
+			[
+				'label'   => esc_html__( 'Vertical Anchor', 'mascot-gsap' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'top',
+				'options' => [
+					'top'    => esc_html__( 'Top', 'mascot-gsap' ),
+					'bottom' => esc_html__( 'Bottom', 'mascot-gsap' ),
+				],
+			]
+		);
+		$repeater->add_responsive_control(
+			'vertical_offset',
+			[
+				'label'      => esc_html__( 'Vertical Offset', 'mascot-gsap' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', '%' ],
+				'default'    => [
+					'unit' => '%',
+					'size' => 0,
+				],
+			]
+		);
+		$repeater->add_responsive_control(
+			'image_width',
+			[
+				'label'      => esc_html__( 'Image Width', 'mascot-gsap' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', '%' ],
+				'default'    => [
+					'unit' => 'px',
+					'size' => 160,
+				],
+			]
+		);
+		$repeater->add_responsive_control(
+			'image_height',
+			[
+				'label'      => esc_html__( 'Image Height', 'mascot-gsap' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', '%' ],
+				'default'    => [
+					'unit' => 'px',
+					'size' => 160,
+				],
+			]
+		);
+		$repeater->add_control(
+			'device_visibility',
+			[
+				'label'        => esc_html__( 'Desktop Only', 'mascot-gsap' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'description'  => esc_html__( 'Hide this image on screens smaller than the ScrollTrigger breakpoint.', 'mascot-gsap' ),
+				'label_on'     => esc_html__( 'Yes', 'mascot-gsap' ),
+				'label_off'    => esc_html__( 'No', 'mascot-gsap' ),
+				'return_value' => 'yes',
+			]
+		);
+
+		$this->add_control(
+			'surrounding_images',
+			[
+				'label'       => esc_html__( 'Surrounding Images', 'mascot-gsap' ),
+				'type'        => Controls_Manager::REPEATER,
+				'fields'      => $repeater->get_controls(),
+				'title_field' => '{{{ item_image.url ? item_image.url.split("/").pop() : "' . esc_html__( 'Surrounding Image', 'mascot-gsap' ) . '" }}}',
+			]
+		);
 
 		$this->end_controls_section();
 
@@ -357,17 +445,29 @@ class GSAP_Image_Gallery_Widget extends Widget_Base {
 		$main_image = $this->prepare_image( isset( $settings['main_image'] ) ? $settings['main_image'] : [], esc_html__( 'Main gallery image', 'mascot-gsap' ), true );
 
 		$surrounding_images = [];
-		for ( $i = 1; $i <= 7; $i++ ) {
-			$key                       = 'gallery_image_' . $i;
-			$surrounding_images[ $i ]  = $this->prepare_image(
-				isset( $settings[ $key ] ) ? $settings[ $key ] : [],
-				sprintf(
-					/* translators: %d: Thumb index */
-					esc_html__( 'Gallery image %d', 'mascot-gsap' ),
-					$i
-				),
-				false
-			);
+		if ( ! empty( $settings['surrounding_images'] ) && is_array( $settings['surrounding_images'] ) ) {
+			foreach ( $settings['surrounding_images'] as $index => $item ) {
+				$image = $this->prepare_image(
+					isset( $item['item_image'] ) ? $item['item_image'] : [],
+					sprintf(
+						/* translators: %d: Thumb index */
+						esc_html__( 'Gallery image %d', 'mascot-gsap' ),
+						$index + 1
+					),
+					false
+				);
+
+				$surrounding_images[] = [
+					'image'             => $image,
+					'horizontal_anchor' => isset( $item['horizontal_anchor'] ) ? $item['horizontal_anchor'] : 'left',
+					'vertical_anchor'   => isset( $item['vertical_anchor'] ) ? $item['vertical_anchor'] : 'top',
+					'horizontal_offset' => isset( $item['horizontal_offset'] ) ? $item['horizontal_offset'] : [],
+					'vertical_offset'   => isset( $item['vertical_offset'] ) ? $item['vertical_offset'] : [],
+					'image_width'       => isset( $item['image_width'] ) ? $item['image_width'] : [],
+					'image_height'      => isset( $item['image_height'] ) ? $item['image_height'] : [],
+					'desktop_only'      => ( isset( $item['device_visibility'] ) && 'yes' === $item['device_visibility'] ),
+				];
+			}
 		}
 
 		include MASCOT_GSAP_PATH . 'widgets/gsap-image-gallery/tpl/gsap-image-gallery.php';

@@ -1,3 +1,8 @@
+.gallery {
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
 .gallery-thumb {
   height: 100%;
   margin: 0 auto;
@@ -57,4 +62,27 @@
   position: absolute;
   top: -37%;
   left: -56%;
+}
+
+.gallery-thumb-inner--desktop {
+  display: none;
+}
+
+@media (min-width: 1200px) {
+  .gallery-thumb-inner {
+    display: block;
+  }
+  .gallery-thumb-inner--desktop {
+    display: block;
+  }
+}
+@media (max-width: 767px) {
+  .gallery-area {
+    padding: 50px 0;
+  }
+  .gallery-thumb img {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+  }
 }
