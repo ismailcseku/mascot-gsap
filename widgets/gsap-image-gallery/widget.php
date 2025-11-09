@@ -369,6 +369,19 @@ class GSAP_Image_Gallery_Widget extends Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'reverse_animation',
+			[
+				'label'        => esc_html__( 'Reverse Animation', 'mascot-gsap' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Yes', 'mascot-gsap' ),
+				'label_off'    => esc_html__( 'No', 'mascot-gsap' ),
+				'return_value' => 'yes',
+				'default'      => '',
+				'description'  => esc_html__( 'Animate the main image from the final size back to its original size as you scroll forward.', 'mascot-gsap' ),
+			]
+		);
+
 		$this->end_controls_section();
 
 		$this->start_controls_section(
@@ -439,6 +452,7 @@ class GSAP_Image_Gallery_Widget extends Widget_Base {
 			'duration'      => isset( $settings['animation_duration']['size'] ) ? $settings['animation_duration']['size'] : 3,
 			'scrub'         => isset( $settings['animation_scrub']['size'] ) ? $settings['animation_scrub']['size'] : 1,
 			'final-size'    => isset( $settings['final_image_size']['size'] ) ? $settings['final_image_size']['size'] : 580,
+			'reverse'       => ( isset( $settings['reverse_animation'] ) && 'yes' === $settings['reverse_animation'] ) ? 'true' : 'false',
 			'breakpoint'    => 1200,
 		];
 
