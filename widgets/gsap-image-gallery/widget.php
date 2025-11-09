@@ -146,16 +146,23 @@ class GSAP_Image_Gallery_Widget extends Widget_Base {
 				],
 			]
 		);
-		$repeater->add_control(
+		$repeater->add_responsive_control(
 			'horizontal_anchor',
 			[
-				'label'   => esc_html__( 'Horizontal Anchor', 'mascot-gsap' ),
-				'type'    => Controls_Manager::SELECT,
-				'default' => 'left',
+				'label' => __( 'Horizontal Orientation', 'mascot-gsap' ),
+				'type' => Controls_Manager::CHOOSE,
+				'default' => is_rtl() ? 'right' : 'left',
 				'options' => [
-					'left'  => esc_html__( 'Left', 'mascot-gsap' ),
-					'right' => esc_html__( 'Right', 'mascot-gsap' ),
+					'left' => [
+						'title' => __( 'Left', 'mascot-gsap' ),
+						'icon' => 'eicon-h-align-left',
+					],
+					'right' => [
+						'title' => __( 'Right', 'mascot-gsap' ),
+						'icon' => 'eicon-h-align-right',
+					],
 				],
+				'toggle' => false,
 			]
 		);
 		$repeater->add_responsive_control(
@@ -170,16 +177,23 @@ class GSAP_Image_Gallery_Widget extends Widget_Base {
 				],
 			]
 		);
-		$repeater->add_control(
+		$repeater->add_responsive_control(
 			'vertical_anchor',
 			[
-				'label'   => esc_html__( 'Vertical Anchor', 'mascot-gsap' ),
-				'type'    => Controls_Manager::SELECT,
-				'default' => 'top',
+				'label' => __( 'Vertical Orientation', 'mascot-gsap' ),
+				'type' => Controls_Manager::CHOOSE,
 				'options' => [
-					'top'    => esc_html__( 'Top', 'mascot-gsap' ),
-					'bottom' => esc_html__( 'Bottom', 'mascot-gsap' ),
+					'top' => [
+						'title' => __( 'Top', 'mascot-gsap' ),
+						'icon' => 'eicon-v-align-top',
+					],
+					'bottom' => [
+						'title' => __( 'Bottom', 'mascot-gsap' ),
+						'icon' => 'eicon-v-align-bottom',
+					],
 				],
+				'default' => 'top',
+				'toggle' => false,
 			]
 		);
 		$repeater->add_responsive_control(
