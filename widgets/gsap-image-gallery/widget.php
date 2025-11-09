@@ -237,6 +237,121 @@ class GSAP_Image_Gallery_Widget extends Widget_Base {
 				'type'        => Controls_Manager::REPEATER,
 				'fields'      => $repeater->get_controls(),
 				'title_field' => '{{{ item_image.url ? item_image.url.split("/").pop() : "' . esc_html__( 'Surrounding Image', 'mascot-gsap' ) . '" }}}',
+				'default'     => [
+					[
+						'item_image'        => [
+							'url' => Utils::get_placeholder_image_src(),
+						],
+						'horizontal_anchor' => 'left',
+						'horizontal_offset' => [
+							'unit' => '%',
+							'size' => 7,
+						],
+						'vertical_anchor'   => 'top',
+						'vertical_offset'   => [
+							'unit' => '%',
+							'size' => -45,
+						],
+						'image_width'       => [
+							'unit' => 'px',
+							'size' => 500,
+						],
+						'image_height'      => [
+							'unit' => 'px',
+							'size' => 230,
+						],
+					],
+					[
+						'item_image'        => [
+							'url' => Utils::get_placeholder_image_src(),
+						],
+						'horizontal_anchor' => 'left',
+						'horizontal_offset' => [
+							'unit' => '%',
+							'size' => -72,
+						],
+						'vertical_anchor'   => 'top',
+						'vertical_offset'   => [
+							'unit' => '%',
+							'size' => -31,
+						],
+					],
+					[
+						'item_image'        => [
+							'url' => Utils::get_placeholder_image_src(),
+						],
+						'horizontal_anchor' => 'left',
+						'horizontal_offset' => [
+							'unit' => '%',
+							'size' => -63,
+						],
+						'vertical_anchor'   => 'bottom',
+						'vertical_offset'   => [
+							'unit' => '%',
+							'size' => 5,
+						],
+					],
+					[
+						'item_image'        => [
+							'url' => Utils::get_placeholder_image_src(),
+						],
+						'horizontal_anchor' => 'right',
+						'horizontal_offset' => [
+							'unit' => '%',
+							'size' => -95,
+						],
+						'vertical_anchor'   => 'bottom',
+						'vertical_offset'   => [
+							'unit' => '%',
+							'size' => 6,
+						],
+					],
+					[
+						'item_image'        => [
+							'url' => Utils::get_placeholder_image_src(),
+						],
+						'horizontal_anchor' => 'left',
+						'horizontal_offset' => [
+							'unit' => '%',
+							'size' => -28,
+						],
+						'vertical_anchor'   => 'bottom',
+						'vertical_offset'   => [
+							'unit' => '%',
+							'size' => -58,
+						],
+					],
+					[
+						'item_image'        => [
+							'url' => Utils::get_placeholder_image_src(),
+						],
+						'horizontal_anchor' => 'right',
+						'horizontal_offset' => [
+							'unit' => '%',
+							'size' => -16,
+						],
+						'vertical_anchor'   => 'bottom',
+						'vertical_offset'   => [
+							'unit' => '%',
+							'size' => -58,
+						],
+					],
+					[
+						'item_image'        => [
+							'url' => Utils::get_placeholder_image_src(),
+						],
+						'horizontal_anchor' => 'right',
+						'horizontal_offset' => [
+							'unit' => '%',
+							'size' => -56,
+						],
+						'vertical_anchor'   => 'top',
+						'vertical_offset'   => [
+							'unit' => '%',
+							'size' => -37,
+						],
+					],
+				],
 			]
 		);
 
