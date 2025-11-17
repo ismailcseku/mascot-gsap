@@ -120,7 +120,13 @@
    * Initialize on document ready
    */
   $(document).ready(function () {
-    MascotGSAPScrollPin();
+    setTimeout(function () {
+      MascotGSAPScrollPin();
+      // Refresh ScrollTrigger after initialization to ensure correct marker positions
+      if (typeof ScrollTrigger !== "undefined") {
+        ScrollTrigger.refresh();
+      }
+    }, 500);
   });
 
   /**
@@ -129,7 +135,13 @@
   $(window).on("elementor/frontend/init", function () {
     if (typeof elementorFrontend !== "undefined") {
       elementorFrontend.hooks.addAction("frontend/element_ready/mascot-gsap-scroll-pin.default", function ($scope) {
-        MascotGSAPScrollPin();
+        setTimeout(function () {
+          MascotGSAPScrollPin();
+          // Refresh ScrollTrigger after initialization to ensure correct marker positions
+          if (typeof ScrollTrigger !== "undefined") {
+            ScrollTrigger.refresh();
+          }
+        }, 500);
       });
     }
   });
