@@ -438,6 +438,19 @@ class GSAP_Image_Gallery_Widget extends Widget_Base {
 		);
 
 		$this->add_control(
+			'init_delay',
+			[
+				'label' => esc_html__( 'Initialization Delay (ms)', 'mascot-gsap' ),
+				'type' => Controls_Manager::NUMBER,
+				'default' => 2000,
+				'min' => 0,
+				'max' => 10000,
+				'step' => 100,
+				'description' => esc_html__( 'Delay before initializing ScrollTrigger to ensure correct marker positioning on page refresh (in milliseconds)', 'mascot-gsap' ),
+			]
+		);
+
+		$this->add_control(
 			'animation_duration',
 			[
 				'label'   => esc_html__( 'Animation Duration', 'mascot-gsap' ),
@@ -583,6 +596,7 @@ class GSAP_Image_Gallery_Widget extends Widget_Base {
 			'final-size'    => isset( $settings['final_image_size']['size'] ) ? $settings['final_image_size']['size'] : 580,
 			'reverse'       => ( isset( $settings['reverse_animation'] ) && 'yes' === $settings['reverse_animation'] ) ? 'true' : 'false',
 			'breakpoint'    => 1200,
+			'init-delay'    => isset( $settings['init_delay'] ) ? intval( $settings['init_delay'] ) : 1500,
 		];
 
 		$main_image = $this->prepare_image( isset( $settings['main_image'] ) ? $settings['main_image'] : [], esc_html__( 'Main gallery image', 'mascot-gsap' ), true );

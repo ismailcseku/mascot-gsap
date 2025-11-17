@@ -34,6 +34,7 @@
         duration: parseFloat(getAttr("duration", 3)),
         finalSize: parseFloat(getAttr("final-size", 580)),
         reverse: getAttr("reverse", "false") === "true",
+        initDelay: parseInt(getAttr("init-delay", 2000), 10),
       };
 
       if (isNaN(timelineOptions.finalSize) || timelineOptions.finalSize <= 0) {
@@ -130,9 +131,17 @@
         }
 
         $gallery.data("gsapImageGalleryTimeline", tl);
+
+        // Refresh ScrollTrigger after initialization to ensure correct marker positions
+        if (typeof window.ScrollTrigger !== "undefined") {
+          window.ScrollTrigger.refresh();
+        }
       };
 
-      createTimeline();
+      // Initialize with delay to ensure correct marker positioning
+      setTimeout(function() {
+        createTimeline();
+      }, timelineOptions.initDelay);
 
       if (mediaQuery.addEventListener) {
         mediaQuery.addEventListener("change", createTimeline);
