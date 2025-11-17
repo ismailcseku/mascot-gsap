@@ -50,6 +50,7 @@
           scrub: 1,
           markers: false,
           "pin-spacing": false,
+          "init-delay": 2000,
         };
       }
 
@@ -70,49 +71,60 @@
       // Parse scale animation value
       var scaleEnabled = settings["enable-scale"] === "true" || settings["enable-scale"] === true;
 
-      //Create the timeline
-      var projectText = gsap.timeline({
-        scrollTrigger: {
-          trigger: $parent[0],
-          start: settings["trigger-start"],
-          end: settings["trigger-end"],
-          pin: $title[0],
-          markers: markersValue,
-          pinSpacing: pinSpacingValue,
-          scrub: scrubValue,
-        },
-      });
+      // Get initialization delay (default 2000ms)
+      var initDelay = settings["init-delay"] ? parseInt(settings["init-delay"], 10) : 2000;
 
-      // Set initial state (scale)
-      var initialState = {
-        duration: settings.duration,
-      };
-      if (scaleEnabled) {
-        initialState.scale = settings["initial-scale"];
-      }
-      projectText.set($title[0], initialState);
+      // Initialize with delay to ensure correct marker positioning
+      setTimeout(function() {
+        //Create the timeline
+        var projectText = gsap.timeline({
+          scrollTrigger: {
+            trigger: $parent[0],
+            start: settings["trigger-start"],
+            end: settings["trigger-end"],
+            pin: $title[0],
+            markers: markersValue,
+            pinSpacing: pinSpacingValue,
+            scrub: scrubValue,
+          },
+        });
 
-      // Animate to final state (scale)
-      var finalState = {
-        duration: settings.duration,
-      };
-      if (scaleEnabled) {
-        finalState.scale = settings["final-scale"];
-      }
-      projectText.to($title[0], finalState);
+        // Set initial state (scale)
+        var initialState = {
+          duration: settings.duration,
+        };
+        if (scaleEnabled) {
+          initialState.scale = settings["initial-scale"];
+        }
+        projectText.set($title[0], initialState);
 
-      // Hold at final state
-      var holdState = {
-        duration: settings["hold-duration"] || settings.duration,
-      };
-      if (scaleEnabled) {
-        holdState.scale = settings["final-scale"];
-      }
-      var holdDelay = settings["hold-delay"] || settings.duration;
-      projectText.to($title[0], holdState, "+=" + holdDelay);
+        // Animate to final state (scale)
+        var finalState = {
+          duration: settings.duration,
+        };
+        if (scaleEnabled) {
+          finalState.scale = settings["final-scale"];
+        }
+        projectText.to($title[0], finalState);
 
-      // Mark as initialized to prevent duplicate initialization
-      $this.data("gsap-scroll-pin-initialized", true);
+        // Hold at final state
+        var holdState = {
+          duration: settings["hold-duration"] || settings.duration,
+        };
+        if (scaleEnabled) {
+          holdState.scale = settings["final-scale"];
+        }
+        var holdDelay = settings["hold-delay"] || settings.duration;
+        projectText.to($title[0], holdState, "+=" + holdDelay);
+
+        // Refresh ScrollTrigger after initialization to ensure correct marker positions
+        if (typeof ScrollTrigger !== "undefined") {
+          ScrollTrigger.refresh();
+        }
+
+        // Mark as initialized to prevent duplicate initialization
+        $this.data("gsap-scroll-pin-initialized", true);
+      }, initDelay);
     });
   };
 
@@ -120,13 +132,7 @@
    * Initialize on document ready
    */
   $(document).ready(function () {
-    setTimeout(function () {
-      MascotGSAPScrollPin();
-      // Refresh ScrollTrigger after initialization to ensure correct marker positions
-      if (typeof ScrollTrigger !== "undefined") {
-        ScrollTrigger.refresh();
-      }
-    }, 2000);
+    MascotGSAPScrollPin();
   });
 
   /**

@@ -397,6 +397,18 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 				'description' => esc_html__( 'Show ScrollTrigger markers for debugging (development only)', 'mascot-gsap' ),
 			]
 		);
+		$this->add_control(
+			'init_delay',
+			[
+				'label' => esc_html__( 'Initialization Delay (ms)', 'mascot-gsap' ),
+				'type' => Controls_Manager::NUMBER,
+				'default' => 2000,
+				'min' => 0,
+				'max' => 10000,
+				'step' => 100,
+				'description' => esc_html__( 'Delay before initializing ScrollTrigger to ensure correct marker positioning on page refresh (in milliseconds)', 'mascot-gsap' ),
+			]
+		);
 		$this->end_controls_section();
 
 		// General Settings
@@ -597,6 +609,7 @@ class GSAP_Scroll_Pin_Widget extends Widget_Base {
 			'scrub' => isset($settings['scrub']['size']) ? $settings['scrub']['size'] : 1,
 			'markers' => (isset($settings['show_markers']) && $settings['show_markers'] == 'yes') ? 'true' : 'false',
 			'pin-spacing' => (isset($settings['pin_spacing']) && $settings['pin_spacing'] == 'yes') ? 'true' : 'false',
+			'init-delay' => isset($settings['init_delay']) ? intval($settings['init_delay']) : 2000,
 		);
 
 		// Extract variables for template
