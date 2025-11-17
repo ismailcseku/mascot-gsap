@@ -126,7 +126,7 @@
       if (typeof ScrollTrigger !== "undefined") {
         ScrollTrigger.refresh();
       }
-    }, 500);
+    }, 1000);
   });
 
   /**
@@ -141,7 +141,7 @@
           if (typeof ScrollTrigger !== "undefined") {
             ScrollTrigger.refresh();
           }
-        }, 500);
+        }, 1000);
       });
     }
   });
