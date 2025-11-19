@@ -190,6 +190,18 @@ final class Mascot_GSAP {
 			true
 		);
 
+		// SplitText Plugin (Premium - requires Club GreenSock membership)
+		// Download from: https://greensock.com/gsap/ (Club members only)
+		if ( file_exists( MASCOT_GSAP_PATH . 'assets/js/plugins/SplitText.min.js' ) ) {
+			wp_register_script(
+				'gsap-splittext',
+				MASCOT_GSAP_ASSETS_URL . 'js/plugins/SplitText.min.js',
+				array( 'gsap' ),
+				'3.12.5',
+				true
+			);
+		}
+
 		// Register alias for ScrollTrigger (for theme compatibility)
 		wp_register_script(
 			'tm-scroll-trigger',

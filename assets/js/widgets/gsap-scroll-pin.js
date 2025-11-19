@@ -26,11 +26,18 @@
 
       var $title = $this.find(".scroll-pin-title");
       var $widget = $this.closest(".mascot-gsap-scroll-pin");
+      // Find the parent section with class e-parent
       var $parent = $this.closest(".e-parent");
 
       // Check if required elements exist
       if ($title.length === 0) {
         console.warn("Scroll pin title element not found");
+        return;
+      }
+
+      // Check if parent section with e-parent class exists
+      if ($parent.length === 0) {
+        console.warn("Parent section with class 'e-parent' not found for scroll pin");
         return;
       }
 
@@ -74,18 +81,21 @@
       // Get initialization delay (default 2000ms)
       var initDelay = settings["init-delay"] ? parseInt(settings["init-delay"], 10) : 2000;
 
-      // Initialize with delay to ensure correct marker positioning
-      setTimeout(function() {
-        //Create the timeline
+      // Initialize function - wait for window load to ensure correct positioning
+      var initScrollPin = function () {
+        // Create the timeline
+        // trigger should be the parent section with class e-parent
         var projectText = gsap.timeline({
           scrollTrigger: {
-            trigger: $parent[0],
+            trigger: $parent[0], // Parent section with class e-parent
             start: settings["trigger-start"],
             end: settings["trigger-end"],
             pin: $title[0],
             markers: markersValue,
             pinSpacing: pinSpacingValue,
             scrub: scrubValue,
+            invalidateOnRefresh: true, // Force recalculation on refresh
+            refreshPriority: -1, // Refresh after other ScrollTriggers
           },
         });
 
@@ -117,22 +127,65 @@
         var holdDelay = settings["hold-delay"] || settings.duration;
         projectText.to($title[0], holdState, "+=" + holdDelay);
 
-        // Refresh ScrollTrigger after initialization to ensure correct marker positions
-        if (typeof ScrollTrigger !== "undefined") {
-          ScrollTrigger.refresh();
-        }
+        // Store ScrollTrigger instance for later refresh
+        var scrollTriggerInstance = projectText.scrollTrigger;
+        $this.data("scroll-trigger-instance", scrollTriggerInstance);
 
         // Mark as initialized to prevent duplicate initialization
         $this.data("gsap-scroll-pin-initialized", true);
-      }, initDelay);
+      };
+
+      // Check if window is already loaded (page refresh scenario)
+      if (document.readyState === "complete") {
+        // Window already loaded, initialize after delay
+        setTimeout(initScrollPin, initDelay);
+      } else {
+        // Wait for window load event (all resources loaded) before initializing
+        $(window).on("load.scrollpin", function () {
+          setTimeout(initScrollPin, initDelay);
+        });
+      }
     });
   };
 
   /**
-   * Initialize on document ready
+   * Initialize on document ready and window load
    */
   $(document).ready(function () {
     MascotGSAPScrollPin();
+
+    // Refresh ScrollTrigger after all resources are loaded (fixes refresh position calculation)
+    $(window).on("load.scrollpinrefresh", function () {
+      if (typeof ScrollTrigger !== "undefined") {
+        // Small delay to ensure all layout calculations are complete
+        setTimeout(function () {
+          ScrollTrigger.refresh();
+        }, 100);
+      }
+    });
+
+    // Refresh ScrollTrigger on resize (with debounce)
+    var resizeTimer;
+    $(window).on("resize.scrollpin", function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        if (typeof ScrollTrigger !== "undefined") {
+          ScrollTrigger.refresh();
+        }
+      }, 250);
+    });
+
+    // Handle page refresh - refresh ScrollTrigger when coming back to page
+    $(window).on("pageshow.scrollpin", function (event) {
+      if (event.originalEvent.persisted) {
+        // Page was loaded from cache (back/forward navigation)
+        setTimeout(function () {
+          if (typeof ScrollTrigger !== "undefined") {
+            ScrollTrigger.refresh();
+          }
+        }, 100);
+      }
+    });
   });
 
   /**
